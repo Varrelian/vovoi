@@ -3,99 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Ruang Kendali Admin - VOVOI Operations')</title>
+    <title>Seller Center - Panel Pengelola Toko</title>
+    <!-- Memanggil Font Standar Industri Startup Indonesia: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/vovoi.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        .admin-nav-item {
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            background-color: #f8fafc;
+            color: #0f172a;
+            -webkit-font-smoothing: antialiased;
+        }
+        .topbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 48px;
+            height: 68px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .brand-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .brand-badge {
+            background-color: #0f172a;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+        }
+        .brand-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .nav-link {
+            text-decoration: none;
+            color: #475569;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 9px 16px;
+            border-radius: 8px;
+            transition: all 0.15s ease;
+        }
+        .nav-link:hover {
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
+        .nav-link-store {
+            text-decoration: none;
+            color: #0B5ED7;
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
             font-size: 13px;
             font-weight: 600;
-            color: #94A3B8;
             padding: 8px 16px;
-            border-radius: var(--radius-full, 9999px);
-            transition: all var(--transition-fast, 0.15s ease);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+            border-radius: 8px;
+            margin-left: 12px;
+            transition: all 0.15s ease;
         }
-        .admin-nav-item:hover, .admin-nav-item.active {
-            color: #FFFFFF;
-            background: rgba(255, 255, 255, 0.08);
+        .nav-link-store:hover {
+            background-color: #dbeafe;
         }
-        .admin-nav-btn-store {
+        .container-admin {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px;
+            min-height: calc(100vh - 130px);
+        }
+        .footer-admin {
+            background-color: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+            padding: 20px;
+            text-align: center;
             font-size: 13px;
-            font-weight: 600;
-            color: #FFFFFF;
-            background: #1E293B;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 8px 18px;
-            border-radius: var(--radius-full, 9999px);
-            transition: all var(--transition-fast, 0.15s ease);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .admin-nav-btn-store:hover {
-            background: #334155;
-            border-color: rgba(255, 255, 255, 0.3);
         }
     </style>
-    @yield('extra_css')
 </head>
-<body style="min-height: 100vh; display: flex; flex-direction: column; background-color: #F8F9FA; color: var(--text-primary, #0F172A); font-family: var(--font-sans);">
-
-    <!-- 1. HEADER KHUSUS ADMIN (VOVOI BACK-OFFICE CONSOLE) -->
-    <header style="background-color: #0A0B0D; border-bottom: 1px solid #1E2024; position: sticky; top: 0; z-index: 100;">
-        <div class="v-container" style="display: flex; justify-content: space-between; align-items: center; height: 72px;">
-            <div style="display: flex; align-items: center; gap: 16px;">
-                <a href="/admin/transactions" class="v-logo" style="color: #FFFFFF;" title="VOVOI Back-Office">
-                    <span style="letter-spacing: -0.05em; font-weight: 800; font-size: 24px;">VOVOI</span>
-                </a>
-            </div>
-
-            <nav style="display: flex; align-items: center; gap: 12px;">
-                <a href="/admin/transactions" class="admin-nav-item {{ request()->is('admin/transactions*') ? 'active' : '' }}">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <polyline points="10 9 9 9 8 9"></polyline>
-                    </svg>
-                    Pesanan Masuk
-                </a>
-                <a href="/" target="_blank" class="admin-nav-btn-store" title="Buka Toko di Tab Baru">
-                    Lihat Toko
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="7" y1="17" x2="17" y2="7"></line>
-                        <polyline points="7 7 17 7 17 17"></polyline>
-                    </svg>
-                </a>
-            </nav>
+<body>
+    <!-- 1. TOPBAR SELLER CENTER -->
+    <header class="topbar">
+        <div class="brand-area">
+            <span class="brand-badge">SELLER CENTER</span>
+            <h1 class="brand-title">Portal Manajemen Toko</h1>
         </div>
+        <nav class="nav-menu">
+            <a href="/admin/transactions" class="nav-link">Pesanan Masuk</a>
+            <a href="/admin/products" class="nav-link">Katalog Produk</a>
+            <a href="/admin/products/create" class="nav-link" style="color: #0B5ED7;">+ Tambah Produk</a>
+            <a href="/" target="_blank" class="nav-link-store">Lihat Toko Depan &nearr;</a>
+        </nav>
     </header>
 
-    <!-- 2. AREA KONTEN DINAMIS ADMIN -->
-    <main style="flex: 1; padding: 36px 0 60px;">
-        <div class="v-container">
-            @yield('konten_admin')
-        </div>
+    <!-- 2. AREA KONTEN DINAMIS -->
+    <main class="container-admin">
+        @yield('konten_admin')
     </main>
 
-    <!-- 3. FOOTER ADMIN -->
-    <footer style="background-color: #0A0B0D; border-top: 1px solid #1E2024; padding: 24px 0; margin-top: auto; color: #64748B; font-size: 13px;">
-        <div class="v-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <strong style="color: #FFFFFF; font-weight: 800;">VOVOI</strong>
-                <span>&bull;</span>
-                <span>Internal Operations &amp; Transaction Console</span>
-            </div>
-        </div>
+    <!-- 3. FOOTER -->
+    <footer class="footer-admin">
+        Portal Seller Center &bull; Kompetensi Keahlian Rekayasa Perangkat Lunak - SMK Plus Pelita Nusantara
     </footer>
-
-    @yield('extra_js')
 </body>
 </html>
+

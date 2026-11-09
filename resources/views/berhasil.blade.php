@@ -314,8 +314,27 @@
             <td style="color: var(--text-secondary, #64748B);">
               Ongkos Kirim ({{ $transaction->courier }}):
             </td>
-            <td style="text-align: right; font-weight: 600; color: var(--text-primary, #0F172A);">
-              Rp {{ number_format($transaction->shipping_cost, 0, ',', '.') }}
+          </tr>
+          <tr>
+            <td style="padding: 10px 0; color: #64748B;">Status Pesanan:</td>
+            <td style="padding: 10px 0; text-align: right;">
+              @if($transaction->status == 'Pending')
+                <span style="background-color: #fff3cd; color: #856404; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 13px; display: inline-block;">
+                  ⏳ Pending (Menunggu Konfirmasi Admin)
+                </span>
+              @elseif($transaction->status == 'Paid')
+                <span style="background-color: #cfe2ff; color: #084298; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 13px; display: inline-block;">
+                  💳 Paid (Pembayaran Lunas - Sedang Dikemas)
+                </span>
+              @elseif($transaction->status == 'Shipped')
+                <span style="background-color: #d1e7dd; color: #0f5132; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 13px; display: inline-block;">
+                  🚚 Shipped (Pesanan Sedang Dikirim Kurir)
+                </span>
+              @else
+                <span style="background-color: #e2e8f0; color: #475569; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 13px; display: inline-block;">
+                  {{ $transaction->status }}
+                </span>
+              @endif
             </td>
           </tr>
           <tr style="border-top: 2px solid var(--text-primary, #0F172A);">
